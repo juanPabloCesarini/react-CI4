@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function Note({note}) {
-  return (
-    <li >Id: {note.id} Id: {note.title} Id: {note.body}</li>
-  )
+const Note = ({ note,deleteNote }) => {
+    return (
+        <li style={{ marginBottom: '.8em' }}>Id: {note.id} Id: {note.title} Id: {note.body}
+            <button onClick={() => deleteNote(note.id)}>X</button>
+        </li>
+    )
 }
+export default Note;

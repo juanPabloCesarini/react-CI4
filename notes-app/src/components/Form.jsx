@@ -11,25 +11,26 @@ export default function Form({notes,setNotes}) {
     
     const addNote = (ev) => {
         ev.preventDefault();
-        if (note.title === '' || note.body === '') {
+        if (note.title.trim() === '' || note.body.trim() === '') {
             return
         }
         setNotes([
             ...notes,
             {
                 ...note,
-                id: Math.max(...notes.map(note => note.id)) + 1
+                id: notes.length >0 ?Math.max(...notes.map(note => note.id)) + 1 :1
             }
         ]);
+        setNote(initialNotes);
     }
     return (
 
         <form onSubmit={(ev) => addNote(ev)}>
             <label htmlFor="title">Titulo</label>
-            <input id='title' type="text" onChange={(ev) => setNote({ ...note, title: ev.target.value })} />
+            <input id='title' value={note.title} type="text" onChange={(ev) => setNote({ ...note, title: ev.target.value })} />
             <br />
             <label htmlFor="body">Body</label>
-            <input id='body' type="text" onChange={(ev) => setNote({ ...note, body: ev.target.value })} />
+            <input id='body' value={note.body} type="text" onChange={(ev) => setNote({ ...note, body: ev.target.value })} />
             <br />
             <button >Agregar</button>
         </form>
