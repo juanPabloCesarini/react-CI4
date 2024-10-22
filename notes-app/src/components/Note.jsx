@@ -1,11 +1,16 @@
 import { useState, React } from 'react'
 
-const Note = ({ note, deleteNote }) => {
+const Note = ({ note, deleteNote, updateNote }) => {
     const [modeEdit, setModeEdit] = useState(false)
     const [item, setItem] = useState(note)
     const toggle = () => {
         setModeEdit(!modeEdit);
         setItem(note);
+    }
+
+    const edit = () => {
+        updateNote(item);
+        setModeEdit(false);
     }
     return (
         <li style={{ marginBottom: '.8em' }}>
@@ -30,7 +35,7 @@ const Note = ({ note, deleteNote }) => {
             <button onClick={() => toggle()}>{modeEdit ? 'Cancelar' : 'Editar'}</button>
             {
                 modeEdit &&
-                <button onClick={() => deleteNote(note.id)}>Guardar</button>
+                <button onClick={() => edit()}>Guardar</button>
             }
             {
                 !modeEdit &&
