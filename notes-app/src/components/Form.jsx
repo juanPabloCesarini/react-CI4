@@ -1,14 +1,14 @@
-import {useState,React} from 'react'
+import { useState, React } from 'react'
 
-export default function Form({notes,setNotes}) {
+export default function Form({ notes, setNotes }) {
 
     const initialNotes = {
-        id:'',
-        title:'',
-        body:''
+        id: '',
+        title: '',
+        body: ''
     }
-    const [note,setNote]=useState(initialNotes);
-    
+    const [note, setNote] = useState(initialNotes);
+
     const addNote = (ev) => {
         ev.preventDefault();
         if (note.title.trim() === '' || note.body.trim() === '') {
@@ -18,7 +18,7 @@ export default function Form({notes,setNotes}) {
             ...notes,
             {
                 ...note,
-                id: notes.length >0 ?Math.max(...notes.map(note => note.id)) + 1 :1
+                id: notes.length > 0 ? Math.max(...notes.map(note => note.id)) + 1 : 1
             }
         ]);
         setNote(initialNotes);
