@@ -27,18 +27,24 @@ const Note = ({ note, deleteNote, updateNote }) => {
                 <p className="card-content">
                     {
                         modeEdit ?
-                            <label>
-                                Título
-                                <input type="text" value={item.title} onChange={(ev) => setItem({ ...item, title: ev.target.value })} />
-                            </label>
+                            <div className="field">
+                                <label className="label" htmlFor="">Titulo</label>
+                                <div className="control">
+                                    <input className="input" type="text" value={item.title} onChange={(ev) => setItem({ ...item, title: ev.target.value })} />
+                                </div>
+                            </div>
+
                             : <div>Titulo: {note.title}</div>
                     }
                     {
                         modeEdit ?
-                            <label>
-                                Cuerpo
-                                <input type="text" value={item.body} onChange={(ev) => setItem({ ...item, body: ev.target.value })} />
-                            </label>
+                            <div className="field">
+                                <label className="label" htmlFor="">Cuerpo</label>
+                                <div className="control">
+                                    <textarea className="textarea" value={item.body} onChange={(ev) => setItem({ ...item, body: ev.target.value })}></textarea>
+                                </div>
+                            </div>
+
                             : <div>Body: {note.body}</div>
                     }
 
