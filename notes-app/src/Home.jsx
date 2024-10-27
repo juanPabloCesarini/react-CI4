@@ -8,7 +8,7 @@ export default function Dashboard() {
     useEffect(() => {
         axios.get('http://localhost:8080/api/notes')
             .then((payload) => {
-                console.log(payload)
+                setNotes(payload.data);
             }).catch((err) => {
                 console.log(err);
             })
