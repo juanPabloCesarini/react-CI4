@@ -6,14 +6,14 @@ use CodeIgniter\Model;
 use Faker\Generator;
 
 class NotesModel extends Model
-{
+ {
     protected $table            = 'notes';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['title','body'];
+    protected $allowedFields    = [ 'title', 'body' ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -29,8 +29,24 @@ class NotesModel extends Model
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
-    protected $validationMessages   = [];
+    protected $validationRules      = [
+        'title'=>[
+            'label' => 'title',
+            'rules' => 'required'
+        ],
+        'body'=>[
+            'label' => 'body',
+            'rules' => 'required'
+        ],
+    ];
+    protected $validationMessages   = [
+        'title' => [
+            'required' =>'El campo {field} es requerido',
+        ],
+        'body' => [
+            'required' =>'El campo {field} es requerido',
+        ],
+    ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
@@ -45,10 +61,10 @@ class NotesModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function fake(Generator &$faker){
+    public function fake( Generator &$faker ) {
         return [
-            'title' => $faker->words(2, true),
-            'body' => $faker->sentence(6)
+            'title' => $faker->words( 2, true ),
+            'body' => $faker->sentence( 6 )
         ];
     }
 }
