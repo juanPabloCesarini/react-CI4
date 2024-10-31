@@ -1,4 +1,5 @@
 import { useState, React } from 'react'
+import axios from 'axios';
 
 export default function Form({ notes, setNotes }) {
 
@@ -8,20 +9,40 @@ export default function Form({ notes, setNotes }) {
         body: ''
     }
     const [note, setNote] = useState(initialNotes);
+    const [error, setError] = useState({
+        'title': '',
+        'body': '',
+    });
 
     const addNote = (ev) => {
         ev.preventDefault();
-        if (note.title.trim() === '' || note.body.trim() === '') {
-            return
-        }
-        setNotes([
-            ...notes,
-            {
-                ...note,
-                id: notes.length > 0 ? Math.max(...notes.map(note => note.id)) + 1 : 1
-            }
-        ]);
-        setNote(initialNotes);
+
+        axios.post('http://localhost:8080/api/notes', note)
+            .then((payload) => {
+                console.log(payload);
+                setNotes([
+                    ...notes,
+                    payload.data.data
+                ])
+                setNote(initialNotes);
+            })
+            .catch((errors) => {
+                console.log(errors.response);
+                setError(errors.response.data.messages);
+            })
+        /*  if (note.title.trim() === '' || note.body.trim() === '') {
+             return
+         }
+         setNotes([
+             ...notes,
+             {
+                 ...note,
+                 id: notes.length > 0 ? Math.max(...notes.map(note => note.id)) + 1 : 1
+             }
+         ]); */
+
+
+
     }
     return (
         <div className="has-background-success-light p-3">
@@ -32,6 +53,7 @@ export default function Form({ notes, setNotes }) {
                 <div className="control">
                     <input className="input" id='title' value={note.title} type="text" onChange={(ev) => setNote({ ...note, title: ev.target.value })} />
                 </div>
+                <span className="help is-danger"> {error.title}</span>
                 <br />
                 <div className="field">
                     <label className='label' htmlFor="body">Body</label>
@@ -40,6 +62,7 @@ export default function Form({ notes, setNotes }) {
                 <div className="control">
                     <textarea className="textarea" id='body' value={note.body} type="text" onChange={(ev) => setNote({ ...note, body: ev.target.value })}></textarea>
                 </div>
+                <span className="help is-danger"> {error.body} </span>
                 <br />
                 <button className='button is-primary'>Agregar</button>
             </form>
