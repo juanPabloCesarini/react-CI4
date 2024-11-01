@@ -11,8 +11,16 @@ const Notes = ({ notes, setNotes }) => {
     })
     const deleteNote = (id, e) => {
         e.preventDefault();
-        const newNotes = notes.filter(note => id !== note.id);
-        setNotes(newNotes);
+
+        axios.delete(`http://localhost:8080/api/notes/${id}`)
+            .then(payload => {
+                alert(payload.data.message);
+                setNotes(notes.filter(note => id !== note.id));
+            })
+            .catch(error => {
+                alert(error.response)
+            })
+
     }
 
     const updateNote = (newNote) => {
@@ -35,13 +43,15 @@ const Notes = ({ notes, setNotes }) => {
         return response;
     }
     return (
-        <div className='columns is-multiline'>
-            {
-                notes.map(note => {
-                    return <Note setError={setError} error={error} key={note.id} updateNote={updateNote} note={note} deleteNote={deleteNote}></Note>
-                })
-            }
-        </div>
+        notes.length > 0 ?
+            <div className='columns is-multiline'>
+                {
+                    notes.map(note => {
+                        return <Note setError={setError} error={error} key={note.id} updateNote={updateNote} note={note} deleteNote={deleteNote}></Note>
+                    })
+                }
+            </div>
+            : <p className="has-text-centered subtitle">No existen notas</p>
     )
 }
 export default Notes;
