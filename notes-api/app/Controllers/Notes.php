@@ -44,4 +44,15 @@ class Notes extends ResourceController
             'data' => $this->model->find( $id ),
         ] );
     }
+
+    public function delete( $id = null ) {
+        if ( !$this->model->find( $id ) ) {
+            return $this->failNotFound();
+        }
+        $this->model->where( 'id', $id )->delete();
+        return $this->respondDeleted( [
+            'message'=> "Registro {$id} eliminado"
+        ] );
+
+    }
 }

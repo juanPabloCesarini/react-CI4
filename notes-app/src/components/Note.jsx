@@ -1,18 +1,29 @@
 import { useState, React } from 'react'
 
-const Note = ({ note, deleteNote, updateNote }) => {
+const Note = ({ note, deleteNote, updateNote, setError, error }) => {
     const [modeEdit, setModeEdit] = useState(false)
     const [item, setItem] = useState(note)
     const toggle = (e) => {
         e.preventDefault();
         setModeEdit(!modeEdit);
         setItem(note);
+        setError({
+            "title": "",
+            "body": ""
+        });
     }
 
-    const edit = (e) => {
+    const edit = async (e) => {
         e.preventDefault();
-        updateNote(item);
-        setModeEdit(false);
+        if (await updateNote(item)) {
+            setModeEdit(false);
+            setError({
+                "title": "",
+                "body": ""
+            });
+        }
+
+
     }
     return (
         <div className='column is-one-quarter'>
@@ -32,6 +43,7 @@ const Note = ({ note, deleteNote, updateNote }) => {
                                 <div className="control">
                                     <input className="input" type="text" value={item.title} onChange={(ev) => setItem({ ...item, title: ev.target.value })} />
                                 </div>
+                                <span className="help is-danger">{error.title}</span>
                             </div>
 
                             : <div>Titulo: {note.title}</div>
@@ -43,6 +55,7 @@ const Note = ({ note, deleteNote, updateNote }) => {
                                 <div className="control">
                                     <textarea className="textarea" value={item.body} onChange={(ev) => setItem({ ...item, body: ev.target.value })}></textarea>
                                 </div>
+                                <span className="help is-danger">{error.body}</span>
                             </div>
 
                             : <div>Body: {note.body}</div>
